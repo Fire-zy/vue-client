@@ -1,5 +1,6 @@
 <template>
-  <div v-if="managerFlag" class="index">
+  <!-- 用户 -->
+  <div v-if="flag" class="index">
     <HeadNav></HeadNav>
     <LeftMenu></LeftMenu>
     <div class="rightContainer">
@@ -7,42 +8,47 @@
     </div>
   </div>
 
+  <!-- 管理员 -->
   <div v-else class="index">
     <HeadNav></HeadNav>
+    <ManagerLeft></ManagerLeft>
+    <div class="rightContainer">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
 import HeadNav from "../components/HeadNav";
 import LeftMenu from "../components/LeftMenu";
+import ManagerLeft from "../components/ManagerLeft";
 
 export default {
   name: "index",
   data() {
     return {
-      managerFlag: false,
-      userFlag: false,
+      flag: false,
     };
   },
   components: {
     HeadNav,
     LeftMenu,
+    ManagerLeft,
+  },
+  created() {
+    this.show();
   },
   methods: {
     show() {
       setTimeout(() => {
-        //代码
         var status = sessionStorage.getItem("status");
-        console.log(status);
-        if (status == "manager") {
-          this.managerFlag = true;
+        if (status == "用户") {
+          this.flag = true;
         }
-      }, 1000);
+      }, 300);
     },
   },
-  mounted() {
-    this.show();
-  },
+  mounted() {},
 };
 </script>
 <style scoped>

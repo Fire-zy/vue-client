@@ -7,9 +7,10 @@
       style="width: 100%"
       :header-cell-style="{ background: '#eef1f6', color: '#1f2d3d' }"
     >
-      <el-table-column label="ID" prop="id"> </el-table-column>
+      <!-- <el-table-column label="ID" prop="id"> </el-table-column> -->
+      <el-table-column type="index" :index="indexMethod"> </el-table-column>
       <el-table-column label="用户名" prop="username"> </el-table-column>
-      <el-table-column label="用户状态" prop="status"> </el-table-column>
+      <el-table-column label="用户角色" prop="status"> </el-table-column>
       <el-table-column label="邮箱" prop="email"> </el-table-column>
       <el-table-column label="电话" prop="user_phone"> </el-table-column>
       <el-table-column label="操作">
@@ -34,7 +35,7 @@
         <el-form-item label="用户名" label-width="100px">
           <el-input v-model="selectTable.username"></el-input>
         </el-form-item>
-        <el-form-item label="用户状态" label-width="100px">
+        <el-form-item label="用户角色" label-width="100px">
           <el-input v-model="selectTable.status"></el-input>
         </el-form-item>
         <el-form-item label="邮箱" label-width="100px">
@@ -73,6 +74,9 @@ export default {
     this.getUsers();
   },
   methods: {
+    indexMethod(index) {
+      return index * 1 + 1;
+    },
     //打开编辑按钮
     handleEdit(index, row) {
       this.dialogVisible = true;
@@ -92,9 +96,7 @@ export default {
     },
     //行的颜色
     tableRowClassName({ row, rowIndex }) {
-      if (rowIndex === 1) {
-        return "warning-row";
-      } else if (rowIndex === 3) {
+      if (rowIndex % 2 === 1) {
         return "success-row";
       }
       return "";

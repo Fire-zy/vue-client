@@ -18,46 +18,64 @@
             <span slot="title">{{ citem.name }}</span>
           </el-menu-item>
         </router-link>
+
+        <template v-for="item in items2">
+          <el-submenu v-if="item.children" :index="item.path" :key="item.path">
+            <template slot="title">
+              <i :class="'fa fa-margin ' + item.icon"></i>
+              <span slot="title">{{ item.name }}</span>
+            </template>
+            <router-link
+              v-for="(citem, cindex) in item.children"
+              :to="citem.path"
+              :key="cindex"
+            >
+              <el-menu-item :index="citem.path">
+                <span slot="title">{{ citem.name }}</span>
+              </el-menu-item>
+            </router-link>
+          </el-submenu>
+        </template>
       </el-menu>
     </el-col>
   </el-row>
 </template>
 <script>
 export default {
-  name: "leftmenu",
+  name: "managerleft",
   data() {
     return {
-      flag: true,
       items: [
         {
-          icon: "el-icon-menu",
-          name: "首页",
-          path: "home",
+          icon: "el-icon-s-data",
+          name: "用户信息管理",
+          path: "infoshow",
         },
         {
           icon: "el-icon-s-data",
-          name: "产品数据分析管理",
-          path: "analyse",
-        },
-        {
-          icon: "el-icon-s-custom",
-          name: "产品管理",
-          path: "productlist",
+          name: "模块管理",
+          path: "",
         },
         {
           icon: "el-icon-s-data",
-          name: "样品管理",
-          path: "sample",
-        },
-        {
-          icon: "el-icon-date",
-          name: "产品排期",
-          path: "time",
+          name: "字典管理",
+          path: "",
         },
         {
           icon: "el-icon-s-data",
-          name: "个人信息",
-          path: "personal",
+          name: "消息推送",
+          path: "",
+        },
+      ],
+      items2: [
+        {
+          icon: "el-icon-s-data",
+          name: "系统监控",
+          path: "",
+          children: [
+            { path: "", name: "访问日志" },
+            { path: "", name: "在线用户" },
+          ],
         },
       ],
     };
@@ -90,6 +108,7 @@ export default {
 }
 .el-submenu .el-menu-item {
   min-width: 180px;
+  margin: 0;
 }
 
 .hiddenDropdown,

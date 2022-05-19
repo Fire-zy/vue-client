@@ -37,12 +37,12 @@
             type="password"
           ></el-input>
         </el-form-item>
-        <!-- <el-form-item label="选择身份">
+        <el-form-item label="选择身份">
           <el-select v-model="registerUser.status" placeholder="请选择身份">
-            <el-option label="管理员" value="manager"></el-option>
-            <el-option label="员工" value="employee"></el-option>
+            <el-option label="管理员" value="管理员"></el-option>
+            <el-option label="用户" value="用户"></el-option>
           </el-select>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item>
           <el-button
             type="primary"
