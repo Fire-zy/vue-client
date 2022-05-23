@@ -1,6 +1,10 @@
 <template>
   <div class="table_container">
-    <el-select v-model="value" placeholder="请选择排序类别">
+    <el-select
+      v-model="value"
+      placeholder="请选择排序类别"
+      @change="select(value)"
+    >
       <el-option
         v-for="item in options"
         :key="item.value"
@@ -77,6 +81,10 @@ export default {
       proptype: "",
       options: [
         {
+          value: "所有",
+          label: "所有",
+        },
+        {
           value: "女装",
           label: "女装",
         },
@@ -140,21 +148,26 @@ export default {
     this.getAnalyse();
   },
   methods: {
+    select(value) {
+      if (value == "所有") {
+        this.getAnalyse();
+      } else {
+        this.$axios
+          .post("/api/analyse/getDifferent", { pro_type: value })
+          .then((res) => {
+            this.tableData = res.data.data;
+          });
+      }
+    },
     getAnalyse() {
-      this.$axios
-        .get("/api/analyse/getAnalyse", {
-          headers: {
-            "Content-Type": "application/json; charset=utf-8",
-          },
-        })
-        .then((res) => {
-          console.log(res.data.data);
-          this.tableData = res.data.data;
-        });
+      this.$axios.get("/api/analyse/getAnalyse").then((res) => {
+        this.tableData = res.data.data;
+      });
     },
     //多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
+      console.log(val);
     },
     //表格排序
     sortChange(column) {

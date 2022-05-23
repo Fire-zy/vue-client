@@ -7,8 +7,8 @@
       </el-col>
       <el-col :span="6" class="user">
         <div class="userinfo">
-          <img src="../assets/touxiang.jpg" class="avatar" alt="" />
-          <!-- <img :src="user.avatar" class="avatar" alt="" /> -->
+          <!-- <img src="../assets/touxiang.jpg" class="avatar" alt="" /> -->
+          <img class="avatar" :src="img" />
           <div class="welcome">
             <p class="name comename">欢迎</p>
             <p class="name avatarname">{{ user.name }}</p>
@@ -32,10 +32,19 @@
 <script>
 export default {
   name: "head-nav",
+  data() {
+    return {
+      user_pic: "",
+      img: "",
+    };
+  },
   computed: {
     user() {
       return this.$store.getters.user;
     },
+  },
+  created() {
+    this.getUsers();
   },
   methods: {
     setDialogInfo(cmditem) {
@@ -53,15 +62,23 @@ export default {
           break;
       }
     },
-    showInfoList() {
-      // 个人信息
-      this.$router.push("/infoshow");
+
+    getUsers() {
+      this.$axios
+        .post("/api/my/getUserInfo", {
+          username: this.$store.state.user.username,
+        })
+        .then((res) => {
+          console.log(res.data.data[0].user_pic);
+          this.img =
+            "http://localhost:5000/public/images/" + res.data.data[0].user_pic;
+        });
     },
     logout() {
       // 清除token
       localStorage.removeItem("eleToken");
       this.$store.dispatch("clearCurrentState");
-
+      sessionStorage.clear();
       // 页面跳转
       this.$router.push("/login");
     },

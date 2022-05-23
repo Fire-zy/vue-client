@@ -90,9 +90,6 @@ export default {
             this.$store.dispatch("setIsAutnenticated", !this.isEmpty(decode));
             this.$store.dispatch("setUser", decode);
             this.getUsers();
-
-            // 页面跳转
-            this.$router.push("/index");
           });
         } else {
           console.log("error submit!!");
@@ -106,6 +103,12 @@ export default {
           username: this.loginUser.username,
         })
         .then((res) => {
+          // 页面跳转
+          if (res.data.data[0].status == "用户") {
+            this.$router.push("/user");
+          } else {
+            this.$router.push("/manager");
+          }
           sessionStorage.setItem("username", res.data.data[0].username);
           sessionStorage.setItem("status", res.data.data[0].status);
           sessionStorage.setItem("user_pic", res.data.data[0].user_pic);

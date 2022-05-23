@@ -12,6 +12,10 @@ import Time from './views/Time'
 import Analyse from './views/Analyse'
 import SignUp from './views/SignUp'
 import Personal from './views/Personal'
+import News from './views/News'
+import Modulars from './views/Modulars'
+import User from './views/User'
+import Manager from './views/Manager'
 
 Vue.use(Router)
 
@@ -24,21 +28,46 @@ const router = new Router({
     { path: '/register', name: 'register', component: Register },
     { path: '/login', name: 'login', component: Login },
     {
-      path: '/index',
-      name: 'index',
-      component: Index,
+      path: '/user', name: 'user', component: User,
       children: [
         { path: '', component: Home },
         { path: '/home', name: 'home', component: Home },
-        { path: '/infoshow', name: 'infoshow', component: InfoShow },
         { path: '/productlist', name: 'productlist', component: ProductList },
         { path: '/sample', name: 'sample', component: Sample },
         { path: '/time', name: 'time', component: Time },
         { path: '/analyse', name: 'analyse', component: Analyse },
         { path: '/signup', name: 'signup', component: SignUp },
-        { path: '/personal', name: 'personal', component: Personal }
+        { path: '/personal', name: 'personal', component: Personal },
       ]
     },
+    {
+      path: '/manager', name: 'manager', component: Manager,
+      children: [
+        { path: '', component: InfoShow },
+        { path: '/infoshow', name: 'infoshow', component: InfoShow },
+        { path: '/news', name: 'news', component: News },
+        { path: '/modulars', name: 'modulars', component: Modulars }
+      ]
+    },
+
+    // {
+    //   path: '/index',
+    //   name: 'index',
+    //   component: Index,
+    //   children: [
+    //     { path: '', component: Home },
+    //     { path: '/home', name: 'home', component: Home },
+    //     { path: '/infoshow', name: 'infoshow', component: InfoShow },
+    //     { path: '/productlist', name: 'productlist', component: ProductList },
+    //     { path: '/sample', name: 'sample', component: Sample },
+    //     { path: '/time', name: 'time', component: Time },
+    //     { path: '/analyse', name: 'analyse', component: Analyse },
+    //     { path: '/signup', name: 'signup', component: SignUp },
+    //     { path: '/personal', name: 'personal', component: Personal },
+    //     { path: '/news', name: 'news', component: News },
+    //     { path: '/modulars', name: 'modulars', component: Modulars }
+    //   ]
+    // },
   ]
 })
 

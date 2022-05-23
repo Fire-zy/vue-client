@@ -1,17 +1,8 @@
 <template>
   <!-- 用户 -->
-  <div v-if="flag" class="index">
+  <div class="index">
     <HeadNav></HeadNav>
     <LeftMenu></LeftMenu>
-    <div class="rightContainer">
-      <router-view></router-view>
-    </div>
-  </div>
-
-  <!-- 管理员 -->
-  <div v-else class="index">
-    <HeadNav></HeadNav>
-    <ManagerLeft></ManagerLeft>
     <div class="rightContainer">
       <router-view></router-view>
     </div>
@@ -35,19 +26,8 @@ export default {
     LeftMenu,
     ManagerLeft,
   },
-  created() {
-    this.show();
-  },
-  methods: {
-    show() {
-      // setTimeout(() => {
-      var status = sessionStorage.getItem("status");
-      if (status == "用户") {
-        this.flag = true;
-      }
-      // }, 300);
-    },
-  },
+  created() {},
+  methods: {},
   mounted() {},
 };
 </script>

@@ -1,8 +1,31 @@
 <template>
   <div class="table_container">
+    <div class="top">
+      <el-input
+        placeholder="请输入产品名称查询"
+        v-model="input3"
+        class="input-with-select"
+      >
+        <el-select
+          v-model="select"
+          slot="prepend"
+          placeholder="请选择类别"
+          @change="selects(select)"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-input>
+    </div>
+
     <!-- 表格 -->
     <el-table
-      :data="tableData"
+      :data="tables"
       style="width: 100%"
       :header-cell-style="{ background: '#eef1f6', color: '#1f2d3d' }"
     >
@@ -33,13 +56,9 @@
             <el-form-item label="产品介绍">
               <span>{{ props.row.pro_introduction }}</span>
             </el-form-item>
-            <!-- <el-form-item label="产品 ID">
-              <span>{{ props.row.id }}</span>
-            </el-form-item> -->
             <el-form-item label="产品类别">
               <span>{{ props.row.pro_type }}</span>
             </el-form-item>
-
             <el-form-item label="日常价格">
               <span>{{ props.row.pro_daliyprice }}</span>
             </el-form-item>
@@ -49,7 +68,6 @@
             <el-form-item label="直播间价格">
               <span>{{ props.row.pro_saleprice }}</span>
             </el-form-item>
-
             <el-form-item label="折扣方式">
               <span>{{ props.row.pro_discount }}</span>
             </el-form-item>
@@ -87,8 +105,11 @@
         </template>
       </el-table-column>
       <el-table-column type="index" :index="indexMethod"> </el-table-column>
-      <!-- <el-table-column label="产品 ID" prop="id"> </el-table-column> -->
-      <el-table-column label="产品名称" prop="pro_name"> </el-table-column>
+      <el-table-column label="产品名称" prop="pro_name">
+        <template slot-scope="scope">
+          <span v-html="format(scope.row.pro_name)"></span>
+        </template>
+      </el-table-column>
       <el-table-column label="审核状态" prop="choosestatus">
         <template #default="{ row }">
           <span v-if="row.choosestatus">
@@ -116,7 +137,6 @@
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)"
             >编辑</el-button
           >
-          <!-- <el-button size="mini" @click="handleAdd()">添加</el-button> -->
           <el-button
             size="mini"
             type="danger"
@@ -208,66 +228,6 @@
         <el-button type="primary" @click="updateProduct()">确 定</el-button>
       </span>
     </el-dialog>
-
-    <!-- 添加弹窗 -->
-    <el-dialog title="修改信息" :visible.sync="dialogFormVisible">
-      <!-- 修改表单 -->
-      <el-form :model="addTable" class="updateDialog">
-        <div class="updateDialogLeft">
-          <el-form-item label="产品名称" label-width="100px">
-            <el-input v-model="addTable.pro_name"></el-input>
-          </el-form-item>
-          <el-form-item label="产品介绍" label-width="100px">
-            <el-input v-model="addTable.pro_introduction"></el-input>
-          </el-form-item>
-          <el-form-item label="产品类别" label-width="100px">
-            <el-input v-model="addTable.pro_type"></el-input>
-          </el-form-item>
-          <el-form-item label="产品图" label-width="100px">
-            <el-input v-model="addTable.pro_picture"></el-input>
-          </el-form-item>
-          <el-form-item label="日常价格" label-width="100px">
-            <el-input v-model="addTable.pro_daliyprice"></el-input>
-          </el-form-item>
-          <el-form-item label="历史最低价" label-width="100px">
-            <el-input v-model="addTable.pro_lowprice"></el-input>
-          </el-form-item>
-          <el-form-item label="直播间价格" label-width="100px">
-            <el-input v-model="addTable.pro_saleprice"></el-input>
-          </el-form-item>
-        </div>
-        <div class="updateDialogRight">
-          <el-form-item label="产品链接" label-width="100px">
-            <el-input v-model="addTable.pro_link"></el-input>
-          </el-form-item>
-          <el-form-item label="折扣方式" label-width="100px">
-            <el-input v-model="addTable.pro_discount"></el-input>
-          </el-form-item>
-          <el-form-item label="联系人" label-width="100px">
-            <el-input v-model="addTable.pro_contacts"></el-input>
-          </el-form-item>
-          <el-form-item label="联系人电话" label-width="100px">
-            <el-input v-model="addTable.pro_phone"></el-input>
-          </el-form-item>
-          <el-form-item label="联系人邮箱" label-width="100px">
-            <el-input v-model="addTable.pro_email"></el-input>
-          </el-form-item>
-          <el-form-item label="上架数量" label-width="100px">
-            <el-input v-model="addTable.pro_num"></el-input>
-          </el-form-item>
-          <el-form-item label="排期状态" label-width="100px">
-            <el-input v-model="addTable.pro_timestatus"></el-input>
-          </el-form-item>
-          <el-form-item label="审核状态" label-width="100px">
-            <el-input v-model="addTable.choosestatus"></el-input>
-          </el-form-item>
-        </div>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="insertProduct()">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -281,87 +241,30 @@ export default {
   },
   data() {
     return {
+      input3: "",
+      select: "",
       id: "2",
       imgHead: "",
       dialogVisible: false,
-      dialogFormVisible: false,
       tags: [],
-      // inputValue: "",
       tableData: [],
       selectTable: {},
-      addTable: {
-        pro_name: "",
-        pro_introduction: "",
-        pro_type: "",
-        pro_picture: "",
-        pro_daliyprice: "",
-        pro_link: "",
-        pro_discount: "",
-        pro_lowprice: "",
-        pro_saleprice: "",
-        pro_contacts: "",
-        pro_phone: "",
-        pro_email: "",
-        pro_num: "",
-        pro_timestatus: "",
-        choosestatus: "",
-      },
       options: [
         {
-          value: "女装",
-          label: "女装",
+          value: "所有",
+          label: "所有",
         },
         {
-          value: "女鞋",
-          label: "女鞋",
+          value: "已通过审核",
+          label: "已通过审核",
         },
         {
-          value: "男鞋",
-          label: "男鞋",
+          value: "未审核",
+          label: "未审核",
         },
         {
-          value: "箱包",
-          label: "箱包",
-        },
-        {
-          value: "美妆",
-          label: "美妆",
-        },
-        {
-          value: "饰品",
-          label: "饰品",
-        },
-        {
-          value: "洗护",
-          label: "洗护",
-        },
-        {
-          value: "运动",
-          label: "运动",
-        },
-        {
-          value: "百货",
-          label: "百货",
-        },
-        {
-          value: "数码",
-          label: "数码",
-        },
-        {
-          value: "家电",
-          label: "家电",
-        },
-        {
-          value: "食品",
-          label: "食品",
-        },
-        {
-          value: "母婴",
-          label: "母婴",
-        },
-        {
-          value: "生鲜",
-          label: "生鲜",
+          value: "已驳回",
+          label: "已驳回",
         },
       ],
     };
@@ -369,7 +272,42 @@ export default {
   created() {
     this.getProduct();
   },
+  computed: {
+    tables() {
+      const search = this.input3;
+      if (search) {
+        return this.tableData.filter((dataNews) => {
+          return Object.keys(dataNews).some((key) => {
+            return String(dataNews[key]).toLowerCase().indexOf(search) > -1;
+          });
+        });
+      }
+      return this.tableData;
+    },
+  },
   methods: {
+    format(val) {
+      if (val.indexOf(this.input3) !== -1 && this.input3 !== "") {
+        return val.replace(
+          this.input3,
+          '<font color="red">' + this.input3 + "</font>"
+        );
+      } else {
+        return val;
+      }
+    },
+    selects(val) {
+      if (val == "所有") {
+        this.getProduct();
+      } else {
+        this.$axios
+          .post("api/product/getDifferent", { choosestatus: val })
+          .then((res) => {
+            console.log(res);
+            this.tableData = res.data.data;
+          });
+      }
+    },
     indexMethod(index) {
       return index * 1 + 1;
     },
@@ -392,10 +330,7 @@ export default {
         console.log(res);
       });
     },
-    // 点击按钮，打开添加表单
-    handleAdd() {
-      this.dialogFormVisible = true;
-    },
+
     // 关闭弹窗
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -452,29 +387,6 @@ export default {
             this.$message({
               type: "error",
               message: "删除样品信息失败",
-            });
-          }
-        });
-    },
-    //添加产品信息
-    insertProduct() {
-      this.dialogFormVisible = false;
-      this.$axios
-        .post("api/product/insertProduct", this.addTable)
-        .then((res) => {
-          // console.log(res.data);
-
-          if (res.data.status == 0) {
-            this.$message({
-              type: "success",
-              message: "添加产品成功",
-            });
-            this.getProduct();
-            this.addTable = {};
-          } else {
-            this.$message({
-              type: "error",
-              message: res.message,
             });
           }
         });

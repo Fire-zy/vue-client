@@ -1,31 +1,5 @@
 <template>
   <div class="personal">
-    <!-- <div class="addImages">
-      <input
-        type="file"
-        class="file"
-        id="fileInput"
-        @change="getFileHead($event)"
-        accept="image/png, image/jpeg, image/gif, image/jpg"
-      />
-      <div class="text-detail" v-if="'' === this.imgHead">
-        <span>+</span>
-        <p>点击上传</p>
-      </div>
-      <div class="imgs" v-if="'' !== this.imgHead">
-        <img :src="imgHead" width="160px" height="125px" />
-      </div>
-    </div> -->
-
-    <!-- <div>
-      <input
-        type="file"
-        name="file"
-        accept=".jpg, .jpeg, .png"
-        @change="uploadAvatar"
-      />
-    </div> -->
-
     <el-form :model="selectTable">
       <el-form-item label="用户名" label-width="100px">
         <el-input v-model="selectTable.username"></el-input>
@@ -188,6 +162,7 @@ export default {
               message: "修改用户信息成功",
             });
             this.getUsers();
+            location.reload();
           } else {
             this.$message({
               type: "error",
