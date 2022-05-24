@@ -77,19 +77,32 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post("/api/api/login", this.loginUser).then((res) => {
-            // 登录成功
-            const { token } = res.data;
-            localStorage.setItem("eleToken", token);
+            console.log(res);
+            if (res.data.message == "密码错误") {
+              this.$message({
+                type: "error",
+                message: "密码错误",
+              });
+            } else if (res.data.message == "用户名不存在") {
+              this.$message({
+                type: "error",
+                message: "用户名不存在，请先注册",
+              });
+            } else {
+              // 登录成功
+              const { token } = res.data;
+              localStorage.setItem("eleToken", token);
 
-            localStorage.setItem("status", res.data.status);
+              localStorage.setItem("status", res.data.status);
 
-            // 解析token
-            const decode = jwt_decode(token);
+              // 解析token
+              const decode = jwt_decode(token);
 
-            // 存储数据
-            this.$store.dispatch("setIsAutnenticated", !this.isEmpty(decode));
-            this.$store.dispatch("setUser", decode);
-            this.getUsers();
+              // 存储数据
+              this.$store.dispatch("setIsAutnenticated", !this.isEmpty(decode));
+              this.$store.dispatch("setUser", decode);
+              this.getUsers();
+            }
           });
         } else {
           console.log("error submit!!");

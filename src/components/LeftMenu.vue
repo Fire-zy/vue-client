@@ -59,6 +59,11 @@ export default {
           name: "个人信息",
           path: "personal",
         },
+        {
+          icon: "el-icon-bell",
+          name: "系统通知",
+          path: "notice",
+        },
       ],
     };
   },
@@ -74,6 +79,12 @@ export default {
   min-height: 100%;
   background-color: #324057;
   z-index: 99;
+  /* position: relative;
+  top: 0;
+  left: 180px;
+  width: calc(100% - 180px);
+  height: calc(100% - 71px);
+  overflow: auto; */
 }
 .el-menu {
   border: none;
@@ -90,6 +101,10 @@ export default {
 }
 .el-submenu .el-menu-item {
   min-width: 180px;
+}
+.el-menu-item {
+  margin-bottom: 0;
+  margin-top: 15px;
 }
 
 .hiddenDropdown,

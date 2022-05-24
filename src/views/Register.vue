@@ -112,6 +112,9 @@ export default {
           },
           { validator: validatePass2, trigger: "blur" },
         ],
+        status: [
+          { required: true, message: "身份不能为空", trigger: "change" },
+        ],
       },
     };
   },
@@ -120,19 +123,25 @@ export default {
       console.log(this.registerUser.status);
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.registerUser);
           this.$axios
             .post("/api/api/register", this.registerUser)
             .then((res) => {
-              // 注册成功
-              this.$message({
-                message: "注册成功！",
-                type: "success",
-              });
-              this.$router.push("/login");
+              console.log(res);
+              if (res.data.message == "用户名已存在") {
+                this.$message({
+                  type: "error",
+                  message: "用户名已存在",
+                });
+              } else {
+                // 注册成功
+                this.$message({
+                  message: "注册成功！",
+                  type: "success",
+                });
+                this.$router.push("/login");
+              }
             });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -158,6 +167,8 @@ export default {
   left: 34%;
   padding: 25px;
   border-radius: 5px;
+}
+.manage_tip {
   text-align: center;
 }
 .form_container .manage_tip .title {

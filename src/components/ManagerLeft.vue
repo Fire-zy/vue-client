@@ -59,7 +59,7 @@ export default {
         {
           icon: "el-icon-s-data",
           name: "消息推送",
-          path: "/news",
+          path: "/noticemanager",
         },
       ],
       // items2: [

@@ -12,10 +12,11 @@ import Time from './views/Time'
 import Analyse from './views/Analyse'
 import SignUp from './views/SignUp'
 import Personal from './views/Personal'
-import News from './views/News'
 import Modulars from './views/Modulars'
 import User from './views/User'
 import Manager from './views/Manager'
+import Notice from './views/Notice'
+import NoticeManager from './views/NoticeManager'
 
 Vue.use(Router)
 
@@ -38,6 +39,7 @@ const router = new Router({
         { path: '/analyse', name: 'analyse', component: Analyse },
         { path: '/signup', name: 'signup', component: SignUp },
         { path: '/personal', name: 'personal', component: Personal },
+        { path: '/notice', name: 'notice', component: Notice },
       ]
     },
     {
@@ -45,8 +47,8 @@ const router = new Router({
       children: [
         { path: '', component: InfoShow },
         { path: '/infoshow', name: 'infoshow', component: InfoShow },
-        { path: '/news', name: 'news', component: News },
-        { path: '/modulars', name: 'modulars', component: Modulars }
+        { path: '/modulars', name: 'modulars', component: Modulars },
+        { path: '/noticemanager', name: 'noticemanager', component: NoticeManager },
       ]
     },
 

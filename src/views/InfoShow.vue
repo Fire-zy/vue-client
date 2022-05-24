@@ -7,7 +7,6 @@
       style="width: 100%"
       :header-cell-style="{ background: '#eef1f6', color: '#1f2d3d' }"
     >
-      <!-- <el-table-column label="ID" prop="id"> </el-table-column> -->
       <el-table-column type="index" :index="indexMethod"> </el-table-column>
       <el-table-column label="用户名" prop="username"> </el-table-column>
       <el-table-column label="用户角色" prop="status"> </el-table-column>
@@ -21,7 +20,7 @@
           <el-button
             size="mini"
             type="danger"
-            @click="deleteProduct(scope.$index, scope.row)"
+            @click="deleteUserinfo(scope.$index, scope.row)"
             >删除</el-button
           >
         </template>
@@ -35,8 +34,14 @@
         <el-form-item label="用户名" label-width="100px">
           <el-input v-model="selectTable.username"></el-input>
         </el-form-item>
-        <el-form-item label="用户角色" label-width="100px">
+        <!-- <el-form-item label="用户角色" label-width="100px">
           <el-input v-model="selectTable.status"></el-input>
+        </el-form-item> -->
+        <el-form-item label="用户角色" label-width="100px">
+          <el-select v-model="selectTable.status" placeholder="请选择身份">
+            <el-option label="管理员" value="管理员"></el-option>
+            <el-option label="用户" value="用户"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="邮箱" label-width="100px">
           <el-input v-model="selectTable.email"></el-input>
@@ -62,12 +67,7 @@ export default {
       dialogVisible: false,
       dialogFormVisible: false,
       tableData: [],
-      selectTable: {
-        // username: "",
-        // status: "",
-        // email: "",
-        // user_phone: "",
-      },
+      selectTable: {},
     };
   },
   created() {
@@ -136,23 +136,22 @@ export default {
         });
     },
     // 删除用户信息
-    deleteProduct(index, row) {
-      this.$axios
-        .post("api/product/deleteProduct", { id: row.id })
-        .then((res) => {
-          if (res.data.status == 0) {
-            this.$message({
-              type: "success",
-              message: "删除产品信息成功",
-            });
-            this.getProduct();
-          } else {
-            this.$message({
-              type: "error",
-              message: "删除样品信息失败",
-            });
-          }
-        });
+    deleteUserinfo(index, row) {
+      this.$axios.post("api/my/deleteUserinfo", { id: row.id }).then((res) => {
+        console.log(res.data);
+        if (res.data.status == 0) {
+          this.$message({
+            type: "success",
+            message: "删除用户信息成功",
+          });
+          this.getUsers();
+        } else {
+          this.$message({
+            type: "error",
+            message: "删除用户信息失败",
+          });
+        }
+      });
     },
   },
 };
