@@ -77,7 +77,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post("/api/api/login", this.loginUser).then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.message == "密码错误") {
               this.$message({
                 type: "error",

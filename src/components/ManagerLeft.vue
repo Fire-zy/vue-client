@@ -19,7 +19,7 @@
           </el-menu-item>
         </router-link>
 
-        <!-- <template v-for="item in items2">
+        <template v-for="item in items2">
           <el-submenu v-if="item.children" :index="item.path" :key="item.path">
             <template slot="title">
               <i :class="'fa fa-margin ' + item.icon"></i>
@@ -35,7 +35,7 @@
               </el-menu-item>
             </router-link>
           </el-submenu>
-        </template> -->
+        </template>
       </el-menu>
     </el-col>
   </el-row>
@@ -56,23 +56,23 @@ export default {
           name: "模块管理",
           path: "/modulars",
         },
+        // {
+        //   icon: "el-icon-s-data",
+        //   name: "消息推送",
+        //   path: "/noticemanager",
+        // },
+      ],
+      items2: [
         {
           icon: "el-icon-s-data",
-          name: "消息推送",
-          path: "/noticemanager",
+          name: "消息管理",
+          path: "",
+          children: [
+            { path: "/noticemanager", name: "消息推送" },
+            { path: "/noticemanage", name: "消息管理" },
+          ],
         },
       ],
-      // items2: [
-      //   {
-      //     icon: "el-icon-s-data",
-      //     name: "系统监控",
-      //     path: "",
-      //     children: [
-      //       { path: "", name: "访问日志" },
-      //       { path: "", name: "在线用户" },
-      //     ],
-      //   },
-      // ],
     };
   },
   created() {},

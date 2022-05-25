@@ -5,21 +5,21 @@
       :list="list1"
       :group="group"
       class="kanban todo"
-      header-text="Todo"
+      header-text="启用"
     />
     <Kanban
       :key="2"
       :list="list2"
       :group="group"
       class="kanban working"
-      header-text="Working"
+      header-text="禁止"
     />
     <Kanban
       :key="3"
       :list="list3"
       :group="group"
       class="kanban done"
-      header-text="Done"
+      header-text="开发中"
     />
   </div>
 </template>
@@ -35,21 +35,12 @@ export default {
     return {
       group: "mission",
       list1: [
-        { name: "Mission", id: 1 },
-        { name: "Mission", id: 2 },
-        { name: "Mission", id: 3 },
-        { name: "Mission", id: 4 },
+        { name: "数据分析管理" },
+        { name: "产品管理" },
+        { name: "样品管理" },
       ],
-      list2: [
-        { name: "Mission", id: 5 },
-        { name: "Mission", id: 6 },
-        { name: "Mission", id: 7 },
-      ],
-      list3: [
-        { name: "Mission", id: 8 },
-        { name: "Mission", id: 9 },
-        { name: "Mission", id: 10 },
-      ],
+      list2: [{ name: "产品排期" }, { name: "产品报名" }],
+      list3: [{ name: "个人信息修改" }],
     };
   },
 };

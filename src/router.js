@@ -17,6 +17,7 @@ import User from './views/User'
 import Manager from './views/Manager'
 import Notice from './views/Notice'
 import NoticeManager from './views/NoticeManager'
+import NoticeManage from './views/NoticeManage'
 
 Vue.use(Router)
 
@@ -49,6 +50,7 @@ const router = new Router({
         { path: '/infoshow', name: 'infoshow', component: InfoShow },
         { path: '/modulars', name: 'modulars', component: Modulars },
         { path: '/noticemanager', name: 'noticemanager', component: NoticeManager },
+        { path: '/noticemanage', name: 'noticemanage', component: NoticeManage },
       ]
     },
 

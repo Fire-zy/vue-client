@@ -81,7 +81,7 @@ export default {
     //添加产品信息
     insertProduct() {
       this.$axios.post("api/product/insertProduct", this.form).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         if (res.data.status == 0) {
           this.$message({
             type: "success",

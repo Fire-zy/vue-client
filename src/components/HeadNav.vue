@@ -69,7 +69,7 @@ export default {
           username: this.$store.state.user.username,
         })
         .then((res) => {
-          console.log(res.data.data[0].user_pic);
+          // console.log(res.data.data[0].user_pic);
           this.img =
             "http://localhost:5000/public/images/" + res.data.data[0].user_pic;
         });

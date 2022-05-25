@@ -46,6 +46,8 @@ export default {
     setData(dataTransfer) {
       // to avoid Firefox bug
       // Detail see : https://github.com/RubaXa/Sortable/issues/1012
+      // console.log(dataTransfer);
+      console.log(this.list);
       dataTransfer.setData("Text", "");
     },
   },
