@@ -13,7 +13,7 @@
           :to="citem.path"
           :key="cindex"
         >
-          <el-menu-item :index="citem.path">
+          <el-menu-item v-if="citem.flag" :index="citem.path">
             <i :class="citem.icon"></i>
             <span slot="title">{{ citem.name }}</span>
           </el-menu-item>
@@ -27,7 +27,6 @@ export default {
   name: "leftmenu",
   data() {
     return {
-      flag: true,
       items: [
         {
           icon: "el-icon-menu",
@@ -41,7 +40,7 @@ export default {
         },
         {
           icon: "el-icon-s-custom",
-          name: "产品管理",
+          name: "选品管理",
           path: "productlist",
         },
         {
@@ -67,8 +66,22 @@ export default {
       ],
     };
   },
-  created() {},
-  methods: {},
+  created() {
+    this.getModules();
+  },
+  methods: {
+    getModules() {
+      this.$axios.get("api/modules/getModules").then((res) => {
+        for (var i in res.data.data) {
+          for (var j in this.items) {
+            if (res.data.data[i].name == this.items[j].name) {
+              this.$set(this.items[j], "flag", res.data.data[i].status);
+            }
+          }
+        }
+      });
+    },
+  },
 };
 </script>
 <style scoped>

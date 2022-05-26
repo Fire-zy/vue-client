@@ -87,7 +87,7 @@ export default {
   methods: {
     handleAvatarSuccess(res, file) {
       this.$set(this.selectTable, "user_pic", res.message);
-      console.log(this.selectTable);
+      // console.log(this.selectTable);
     },
     handleChange(file, fileList) {
       // console.log(fileList);

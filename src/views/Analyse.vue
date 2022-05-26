@@ -1,21 +1,31 @@
 <template>
   <div class="table_container">
-    <el-select
-      v-model="value"
-      placeholder="请选择排序类别"
-      @change="select(value)"
-    >
-      <el-option
-        v-for="item in options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value"
+    <div class="top">
+      <el-input
+        placeholder="请输入产品名称查询"
+        v-model="input3"
+        class="input-with-select"
       >
-      </el-option>
-    </el-select>
-    <el-button type="primary" plain>添加至产品管理</el-button>
+        <el-select
+          v-model="value"
+          slot="prepend"
+          placeholder="请选择排序类别"
+          @change="selects(value)"
+        >
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          >
+          </el-option>
+        </el-select>
+      </el-input>
+      <el-button class="delete" type="danger" plain>批量删除</el-button>
+    </div>
+
     <el-table
-      :data="tableData"
+      :data="tables"
       style="width: 100%"
       :header-cell-style="{ background: '#eef1f6', color: '#1f2d3d' }"
       :row-class-name="tableRowClassName"
@@ -30,7 +40,11 @@
         :index="indexMethod"
       >
       </el-table-column>
-      <el-table-column prop="pro_name" label="产品名称"> </el-table-column>
+      <el-table-column prop="pro_name" label="产品名称">
+        <template slot-scope="scope">
+          <span v-html="format(scope.row.pro_name)"></span>
+        </template>
+      </el-table-column>
       <el-table-column prop="pro_type" label="产品类别"> </el-table-column>
       <el-table-column prop="comment" label="评论分数" sortable="custom">
       </el-table-column>
@@ -77,6 +91,7 @@ export default {
   },
   data() {
     return {
+      input3: "",
       tableData: [],
       proptype: "",
       options: [
@@ -147,8 +162,31 @@ export default {
   created() {
     this.getAnalyse();
   },
+  computed: {
+    tables() {
+      const search = this.input3;
+      if (search) {
+        return this.tableData.filter((dataNews) => {
+          return Object.keys(dataNews).some((key) => {
+            return String(dataNews[key]).toLowerCase().indexOf(search) > -1;
+          });
+        });
+      }
+      return this.tableData;
+    },
+  },
   methods: {
-    select(value) {
+    format(val) {
+      if (val.indexOf(this.input3) !== -1 && this.input3 !== "") {
+        return val.replace(
+          this.input3,
+          '<font color="red">' + this.input3 + "</font>"
+        );
+      } else {
+        return val;
+      }
+    },
+    selects(value) {
       if (value == "所有") {
         this.getAnalyse();
       } else {
@@ -167,7 +205,7 @@ export default {
     //多选
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(val);
+      // console.log(val);
     },
     //表格排序
     sortChange(column) {
@@ -225,5 +263,8 @@ export default {
 .el-select {
   margin-bottom: 20px;
   margin-right: 20px;
+}
+.delete {
+  margin-left: 10px;
 }
 </style>

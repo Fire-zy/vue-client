@@ -12,15 +12,15 @@
       :list="list2"
       :group="group"
       class="kanban working"
-      header-text="禁止"
+      header-text="禁用"
     />
-    <Kanban
+    <!-- <Kanban
       :key="3"
       :list="list3"
       :group="group"
       class="kanban done"
       header-text="开发中"
-    />
+    /> -->
   </div>
 </template>
 <script>
@@ -34,14 +34,25 @@ export default {
   data() {
     return {
       group: "mission",
-      list1: [
-        { name: "数据分析管理" },
-        { name: "产品管理" },
-        { name: "样品管理" },
-      ],
-      list2: [{ name: "产品排期" }, { name: "产品报名" }],
-      list3: [{ name: "个人信息修改" }],
+      list1: [],
+      list2: [],
     };
+  },
+  created() {
+    this.getModules();
+  },
+  methods: {
+    getModules() {
+      this.$axios.get("api/modules/getModules").then((res) => {
+        for (var i in res.data.data) {
+          if (res.data.data[i].status == "1") {
+            this.list1.push(res.data.data[i]);
+          } else {
+            this.list2.push(res.data.data[i]);
+          }
+        }
+      });
+    },
   },
 };
 </script>

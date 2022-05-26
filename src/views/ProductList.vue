@@ -303,7 +303,7 @@ export default {
         this.$axios
           .post("api/product/getDifferent", { choosestatus: val })
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             this.tableData = res.data.data;
           });
       }

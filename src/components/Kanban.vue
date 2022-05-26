@@ -8,9 +8,11 @@
       v-bind="$attrs"
       class="board-column-content"
       :set-data="setData"
+      @add="add"
+      :move="move"
     >
       <div v-for="element in list" :key="element.id" class="board-item">
-        {{ element.name }} {{ element.id }}
+        {{ element.name }}
       </div>
     </draggable>
   </div>
@@ -43,11 +45,29 @@ export default {
     },
   },
   methods: {
+    move(e) {
+      var val = e.draggedContext.element;
+      if (val.status == "0") {
+        val.status = "1";
+      } else if (val.status == "1") {
+        val.status = "0";
+      }
+      this.$axios.post("api/modules/updateModules", val).then((res) => {});
+    },
+    add(val) {
+      // console.log(val);
+    },
     setData(dataTransfer) {
       // to avoid Firefox bug
       // Detail see : https://github.com/RubaXa/Sortable/issues/1012
       // console.log(dataTransfer);
-      console.log(this.list);
+      setTimeout(() => {
+        for (var i in this.list) {
+          // console.log(this.list[i].name);
+        }
+      }, 1000);
+
+      // console.log(this.list);
       dataTransfer.setData("Text", "");
     },
   },
@@ -55,7 +75,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .board-column {
-  min-width: 300px;
+  min-width: 350px;
   min-height: 100px;
   height: auto;
   overflow: hidden;
