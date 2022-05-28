@@ -33,7 +33,7 @@ export default {
         if (res.data.status == 0) {
           this.$message({
             type: "success",
-            message: "删除成功",
+            message: "成功",
           });
         }
         this.getNotice();

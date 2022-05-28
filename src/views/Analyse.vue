@@ -21,7 +21,9 @@
           </el-option>
         </el-select>
       </el-input>
-      <el-button class="delete" type="danger" plain>批量删除</el-button>
+      <el-button @click="deleteAll" class="delete" type="danger" plain
+        >批量删除</el-button
+      >
     </div>
 
     <el-table
@@ -79,7 +81,7 @@
       <el-table-column prop="pro_introduction" label="产品介绍">
       </el-table-column>
     </el-table>
-    <page></page>
+    <!-- <page></page> -->
   </div>
 </template>
 
@@ -157,6 +159,7 @@ export default {
         },
       ],
       value: "",
+      arr: [], //批量删除数据
     };
   },
   created() {
@@ -202,10 +205,29 @@ export default {
         this.tableData = res.data.data;
       });
     },
-    //多选
+    //批量删除
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      // console.log(val);
+    },
+    deleteAll() {
+      console.log(this.multipleSelection);
+      if (
+        this.multipleSelection == undefined ||
+        this.multipleSelection.length == 0
+      ) {
+        this.$message({
+          type: "error",
+          message: "请选择数据",
+        });
+      } else {
+        var arr = [];
+        for (var i in this.multipleSelection) {
+          arr.push(this.multipleSelection[i].id);
+        }
+        this.$axios.post("/api/analyse/deleteAnalyse", arr).then((res) => {
+          console.log(res);
+        });
+      }
     },
     //表格排序
     sortChange(column) {

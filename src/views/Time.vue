@@ -56,6 +56,17 @@
               placeholder="请输入排期标题"
             ></el-input>
           </el-form-item>
+          <el-form-item label="类别">
+            <el-select v-model="form.type" placeholder="请选择类别">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="颜色" class="color">
             <v-swatches v-model="form.color"></v-swatches>
           </el-form-item>
@@ -92,6 +103,64 @@ export default {
 
   data: function () {
     return {
+      options: [
+        {
+          value: "女装",
+          label: "女装",
+        },
+        {
+          value: "女鞋",
+          label: "女鞋",
+        },
+        {
+          value: "男鞋",
+          label: "男鞋",
+        },
+        {
+          value: "箱包",
+          label: "箱包",
+        },
+        {
+          value: "美妆",
+          label: "美妆",
+        },
+        {
+          value: "饰品",
+          label: "饰品",
+        },
+        {
+          value: "洗护",
+          label: "洗护",
+        },
+        {
+          value: "运动",
+          label: "运动",
+        },
+        {
+          value: "百货",
+          label: "百货",
+        },
+        {
+          value: "数码",
+          label: "数码",
+        },
+        {
+          value: "家电",
+          label: "家电",
+        },
+        {
+          value: "食品",
+          label: "食品",
+        },
+        {
+          value: "母婴",
+          label: "母婴",
+        },
+        {
+          value: "生鲜",
+          label: "生鲜",
+        },
+      ],
       form: {
         color: "#1CA085",
       },
@@ -145,16 +214,17 @@ export default {
         // console.log(event)
       }
     },
+    //拖动修改时间
     eventDrop(dropInfo) {
       //向表单添加键值对
       // console.log(dropInfo.event.startStr);
       this.$set(this.form, "id", dropInfo.event.id);
       this.$set(this.form, "start", dropInfo.event.startStr);
       this.$set(this.form, "end", dropInfo.event.endStr);
-      this.$set(this.form, "end", dropInfo.event.color);
-      console.log(this.form);
+      this.$set(this.form, "color", dropInfo.event.color);
+      // console.log(this.form);
       this.$axios.post("api/time/updateTime", this.form).then((res) => {
-        console.log(res);
+        // console.log(res);
       });
     },
     getTime() {
@@ -168,11 +238,15 @@ export default {
     },
     //添加排期商品
     handleDateSelect(selectInfo) {
+      //得到星期几
+      let week = selectInfo.start.toString();
+      let weeks = week.slice(0, 3);
       //打开表单
       this.dialogFormVisible = true;
       //向表单添加键值对
       this.$set(this.form, "start", selectInfo.startStr);
       this.$set(this.form, "end", selectInfo.endStr);
+      this.$set(this.form, "week", weeks);
 
       let calendarApi = selectInfo.view.calendar;
       calendarApi.unselect(); // clear date selection
@@ -184,6 +258,12 @@ export default {
           //表单验证成功
           //添加至数据库
           this.$axios.post("api/time/insertTime", this.form).then((res) => {
+            if (res.data.status == 0) {
+              this.$message({
+                type: "success",
+                message: "添加成功",
+              });
+            }
             //渲染
             this.calendarApi.addEvent(this.form);
             //重置form

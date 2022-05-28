@@ -130,7 +130,7 @@
       </el-table-column>
     </el-table>
     <!-- 分页 -->
-    <page></page>
+    <!-- <page></page> -->
 
     <!-- 修改弹窗 -->
     <el-dialog title="修改信息" :visible.sync="dialogVisible">

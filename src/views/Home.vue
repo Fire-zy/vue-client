@@ -1,7 +1,7 @@
 <template>
   <div class="Echarts">
     <div id="main" style="width: 1000px; height: 800px"></div>
-    <div id="main2" style="width: 1000px; height: 800px"></div>
+    <!-- <div id="main2" style="width: 1000px; height: 800px"></div> -->
   </div>
 </template>
 
@@ -48,25 +48,10 @@ export default {
           },
         ],
       },
-    };
-  },
-  created() {
-    this.getProduct();
-  },
-  methods: {
-    myEcharts() {
-      // 基于准备好的dom，初始化echarts实例
-      var myChart = this.$echarts.init(document.getElementById("main"));
-      myChart.setOption(this.option);
-    },
-    myEcharts2() {
-      // 基于准备好的dom，初始化echarts实例
-      var myChart = this.$echarts.init(document.getElementById("main2"));
-
       // 指定图表的配置项和数据
-      var option = {
+      option2: {
         title: {
-          text: "产品总量图",
+          text: "产品排期数量图",
         },
         tooltip: {
           trigger: "axis",
@@ -78,7 +63,7 @@ export default {
           },
         },
         legend: {
-          data: ["Email", "Union Ads", "Video Ads", "Direct", "Search Engine"],
+          data: ["食品", "美妆", "女装", "百货"],
           top: "top",
         },
         toolbox: {
@@ -107,7 +92,7 @@ export default {
         ],
         series: [
           {
-            name: "Email",
+            name: "美妆",
             type: "line",
             stack: "Total",
             areaStyle: {},
@@ -117,7 +102,7 @@ export default {
             data: [120, 132, 101, 134, 90, 230, 210],
           },
           {
-            name: "Union Ads",
+            name: "食品",
             type: "line",
             stack: "Total",
             areaStyle: {},
@@ -127,7 +112,7 @@ export default {
             data: [220, 182, 191, 234, 290, 330, 310],
           },
           {
-            name: "Video Ads",
+            name: "百货",
             type: "line",
             stack: "Total",
             areaStyle: {},
@@ -137,7 +122,7 @@ export default {
             data: [150, 232, 201, 154, 190, 330, 410],
           },
           {
-            name: "Direct",
+            name: "女装",
             type: "line",
             stack: "Total",
             areaStyle: {},
@@ -146,24 +131,25 @@ export default {
             },
             data: [320, 332, 301, 334, 390, 330, 320],
           },
-          {
-            name: "Search Engine",
-            type: "line",
-            stack: "Total",
-            label: {
-              show: true,
-              position: "top",
-            },
-            areaStyle: {},
-            emphasis: {
-              focus: "series",
-            },
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-          },
         ],
-      };
+      },
+    };
+  },
+  created() {
+    this.getProduct();
+    // this.getTime();
+  },
+  methods: {
+    myEcharts() {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = this.$echarts.init(document.getElementById("main"));
+      myChart.setOption(this.option);
+    },
+    myEcharts2() {
+      // 基于准备好的dom，初始化echarts实例
+      var myChart = this.$echarts.init(document.getElementById("main2"));
       // 使用刚指定的配置项和数据显示图表。
-      myChart.setOption(option);
+      myChart.setOption(this.option2);
     },
     getProduct() {
       //获取接口数据
@@ -195,6 +181,36 @@ export default {
           // 这里最重要，不要将myEcharts放进mounted里面，渲染不出数据
           this.myEcharts();
         });
+    },
+    getTime() {
+      this.$axios.get("api/time/getTime").then((res) => {
+        var typeData = [];
+        for (var i in res.data.data) {
+          typeData.push(res.data.data[i].type);
+        }
+        //过滤掉重复的类别
+        let textList = typeData.filter(
+          (item, index, arr) => arr.indexOf(item, 0) === index
+        );
+        // this.option2.legend.data = textList;
+        // console.log(this.option2.legend.data);
+        //按类别将每天的数据算出来
+
+        let list = res.data.data;
+        let test = [];
+        list.forEach((i, index) => {
+          textList.forEach((j, index2) => {
+            if (i.type == j[index2]) {
+            }
+            console.log(j);
+          });
+          // console.log(i.week);
+          // if (i.type == "百货") {
+          //   console.log(i);
+          // }
+        });
+        // console.log(test);
+      });
     },
   },
   mounted() {
