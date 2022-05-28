@@ -40,11 +40,7 @@ export default {
             itemStyle: {
               borderRadius: 8,
             },
-            data: [
-              { value: 3, name: "美妆" },
-              { value: 3, name: "洗护" },
-              { value: 3, name: "女鞋" },
-            ],
+            data: [],
           },
         ],
       },
